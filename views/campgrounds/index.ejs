@@ -38,7 +38,7 @@
 
 <% }%>
 <script>
-  const maptilerApiKey = "<%- process.env.MAPTILER_API_KEY %>";
+  const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
   const campgrounds = { features: <%- JSON.stringify(campgrounds) %>}
 </script>
 <!--note that features is set to that because that is what we want in clusterMap.js-->

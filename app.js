@@ -20,6 +20,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
 
 /*
 • LocalStrategy — We use passport-local to create a new LocalStrategy. 
@@ -77,6 +78,8 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
+app.use(helmet({ contentSecurityPolicy: false })); //automatically enables all of the middlewares instead of doing each one. See  https://helmetjs.github.io/
+//contentSecurityPolicy middleware causes some problems and we will not be able to view images and maps, hence we set it to false
 
 app.use(passport.initialize());
 app.use(passport.session()); //setting session..for to set it logged in always until logged out....
