@@ -32,11 +32,13 @@ the credentials. If the credentials are correct, Passport will proceed to serial
 const userRoutes = require("./routes/users.js");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
-// const dbUrl = process.env.DB_URL;
 
-// mongodb://127.0.0.1:27017/yelp-camp
+const MongoStore = require("connect-mongo"); //We have to store the session in something else rather than than the default memory store that is provided on the broswer so we do it with this
+
+const dbUrl = "mongodb://127.0.0.1:27017/yelp-camp";
+// process.env.DB_URL
 mongoose
-  .connect("mongodb://127.0.0.1:27017/yelp-camp")
+  .connect(dbUrl)
   .then(() => {
     console.log("MONGO CONNECTED!");
   })
@@ -63,7 +65,21 @@ app.use(
 ); //replaces the special character with '_'
 /*NOTE: any one of the above sanitization features can be used. */
 
+//session information is now stored in mongo not memory of the browser, by doing the below
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  touchAfter: 24 * 60 * 60, //to not continuously update if data has not changed...it is basically time period in seconds
+  crypto: {
+    secret: "thisshouldbeabettersecret!",
+  },
+});
+
+store.on("error", function (e) {
+  console.log("Session store error", e);
+});
+
 const sessionConfig = {
+  store, //passing in mongostore...so now it can be stored in mongo
   name: "new", //name for the session..just another step for security...now the name shown in the broswer is changed from connect.sid
   secret: "thisshouldbeabettersecret!",
   resave: false,
