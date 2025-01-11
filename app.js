@@ -67,7 +67,7 @@ app.use(
 
 //session information is now stored in mongo not memory of the browser, by doing the below
 const store = MongoStore.create({
-  mongoUrl: dbUrl,
+  mongoUrl: process.env.DB_URL || "mongodb://127.0.0.1:27017/yelp-camp",
   touchAfter: 24 * 60 * 60, //to not continuously update if data has not changed...it is basically time period in seconds
   crypto: {
     secret: "thisshouldbeabettersecret!",
