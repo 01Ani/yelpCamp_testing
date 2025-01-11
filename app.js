@@ -32,7 +32,9 @@ the credentials. If the credentials are correct, Passport will proceed to serial
 const userRoutes = require("./routes/users.js");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
+// const dbUrl = process.env.DB_URL;
 
+// mongodb://127.0.0.1:27017/yelp-camp
 mongoose
   .connect("mongodb://127.0.0.1:27017/yelp-camp")
   .then(() => {
