@@ -35,8 +35,8 @@ const reviewRoutes = require("./routes/reviews");
 
 const MongoStore = require("connect-mongo"); //We have to store the session in something else rather than than the default memory store that is provided on the broswer so we do it with this
 
-const dbUrl = "mongodb://127.0.0.1:27017/yelp-camp";
-// process.env.DB_URL
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
+
 mongoose
   .connect(dbUrl)
   .then(() => {
