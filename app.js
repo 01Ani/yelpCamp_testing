@@ -65,12 +65,14 @@ app.use(
 ); //replaces the special character with '_'
 /*NOTE: any one of the above sanitization features can be used. */
 
+const secret = process.env.SECRET || "thisshouldbeasecret";
+
 //session information is now stored in mongo not memory of the browser, by doing the below
 const store = MongoStore.create({
   mongoUrl: process.env.DB_URL || "mongodb://127.0.0.1:27017/yelp-camp",
   touchAfter: 24 * 60 * 60, //to not continuously update if data has not changed...it is basically time period in seconds
   crypto: {
-    secret: "thisshouldbeabettersecret!",
+    secret,
   },
 });
 
@@ -81,7 +83,7 @@ store.on("error", function (e) {
 const sessionConfig = {
   store, //passing in mongostore...so now it can be stored in mongo
   name: "new", //name for the session..just another step for security...now the name shown in the broswer is changed from connect.sid
-  secret: "thisshouldbeabettersecret!",
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
